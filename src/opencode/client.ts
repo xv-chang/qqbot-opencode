@@ -1,9 +1,9 @@
-import { createOpencode } from "@opencode-ai/sdk";
-import type { OpencodeConfig } from "../types.js";
+import { createOpencode } from '@opencode-ai/sdk';
+import type { OpencodeConfig } from '../types.js';
 
 interface OpencodeClientInstance {
-  client: Awaited<ReturnType<typeof createOpencode>>["client"];
-  server: Awaited<ReturnType<typeof createOpencode>>["server"];
+  client: Awaited<ReturnType<typeof createOpencode>>['client'];
+  server: Awaited<ReturnType<typeof createOpencode>>['server'];
   currentSessionId: string | null;
 }
 
@@ -14,9 +14,7 @@ interface SessionInfo {
 
 let instance: OpencodeClientInstance | null = null;
 
-export async function initOpencodeClient(
-  config: OpencodeConfig,
-): Promise<OpencodeClientInstance> {
+export async function initOpencodeClient(config: OpencodeConfig): Promise<OpencodeClientInstance> {
   const opencodeConfig = config.config || {};
 
   const { client, server } = await createOpencode({
@@ -43,7 +41,7 @@ export async function initOpencodeClient(
 
 export async function createSession(): Promise<SessionInfo> {
   if (!instance) {
-    throw new Error("Opencode client not initialized");
+    throw new Error('Opencode client not initialized');
   }
 
   const sessionResponse = await instance.client.session.create({
@@ -52,7 +50,7 @@ export async function createSession(): Promise<SessionInfo> {
 
   const session = sessionResponse.data;
   if (!session) {
-    throw new Error("Failed to create session");
+    throw new Error('Failed to create session');
   }
 
   instance.currentSessionId = session.id;
@@ -66,7 +64,7 @@ export async function createSession(): Promise<SessionInfo> {
 
 export async function switchSession(sessionId: string): Promise<SessionInfo> {
   if (!instance) {
-    throw new Error("Opencode client not initialized");
+    throw new Error('Opencode client not initialized');
   }
 
   const sessionResponse = await instance.client.session.get({
@@ -89,7 +87,7 @@ export async function switchSession(sessionId: string): Promise<SessionInfo> {
 
 export async function listSessions(): Promise<SessionInfo[]> {
   if (!instance) {
-    throw new Error("Opencode client not initialized");
+    throw new Error('Opencode client not initialized');
   }
 
   const sessionsResponse = await instance.client.session.list();
@@ -129,25 +127,22 @@ export interface PromptResult {
   text: string;
 }
 
-export async function sendPrompt(
-  message: string,
-  imageUrls: string[] = [],
-): Promise<PromptResult> {
+export async function sendPrompt(message: string, imageUrls: string[] = []): Promise<PromptResult> {
   if (!instance || !instance.currentSessionId) {
-    throw new Error("Opencode client not initialized or no active session");
+    throw new Error('Opencode client not initialized or no active session');
   }
 
   console.log(
-    `[Opencode] Sending prompt to session ${instance.currentSessionId}: "${message.slice(0, 50)}..."`,
+    `[Opencode] Sending prompt to session ${instance.currentSessionId}: "${message.slice(0, 50)}..."`
   );
 
-  const parts: Array<
-    { type: "text"; text: string } | { type: "image_url"; url: string }
-  > = [{ type: "text", text: message }];
+  const parts: Array<{ type: 'text'; text: string } | { type: 'image_url'; url: string }> = [
+    { type: 'text', text: message },
+  ];
 
   for (const imageUrl of imageUrls) {
-    if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
-      parts.push({ type: "image_url", url: imageUrl });
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      parts.push({ type: 'image_url', url: imageUrl });
     }
   }
 
@@ -161,16 +156,16 @@ export async function sendPrompt(
 
     console.log(
       `[Opencode] Prompt response:`,
-      JSON.stringify(resultResponse, null, 2).slice(0, 500),
+      JSON.stringify(resultResponse, null, 2).slice(0, 500)
     );
 
     const result = resultResponse.data;
-    let text = "";
+    let text = '';
 
     if (result?.parts && Array.isArray(result.parts)) {
       for (const part of result.parts) {
         console.log(`[Opencode] Part type: ${part.type}`, part);
-        if (part.type === "text" && part.text) {
+        if (part.type === 'text' && part.text) {
           text += part.text;
         }
       }
@@ -181,10 +176,7 @@ export async function sendPrompt(
     if (!text) {
       console.log(`[Opencode] Empty response text, checking info...`);
       if (result?.info) {
-        console.log(
-          `[Opencode] Response info:`,
-          JSON.stringify(result.info).slice(0, 500),
-        );
+        console.log(`[Opencode] Response info:`, JSON.stringify(result.info).slice(0, 500));
       }
     }
 
@@ -199,6 +191,6 @@ export async function closeOpencodeClient(): Promise<void> {
   if (instance) {
     instance.server.close();
     instance = null;
-    console.log("[Opencode] Client closed");
+    console.log('[Opencode] Client closed');
   }
 }

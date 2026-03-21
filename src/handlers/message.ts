@@ -1,12 +1,12 @@
-import { sendPrompt } from "../opencode/client.js";
+import { sendPrompt } from '../opencode/client.js';
 import {
   parseSessionCommand,
   handleSessionNew,
   handleSessionSwitch,
   handleSessionList,
   handleSessionCurrent,
-} from "./session.js";
-import type { ParsedMessage } from "../qq/index.js";
+} from './session.js';
+import type { ParsedMessage } from '../qq/index.js';
 
 export interface MessageHandlerResult {
   text: string;
@@ -16,7 +16,7 @@ export interface MessageHandlerResult {
 
 export async function handleMessage(
   content: string,
-  parsedMessage: ParsedMessage,
+  parsedMessage: ParsedMessage
 ): Promise<MessageHandlerResult> {
   const sessionCmd = parseSessionCommand(content);
 
@@ -27,28 +27,25 @@ export async function handleMessage(
   return handleAIMessage(content, parsedMessage);
 }
 
-async function handleSessionCommand(
-  command: string,
-  args: string,
-): Promise<MessageHandlerResult> {
+async function handleSessionCommand(command: string, args: string): Promise<MessageHandlerResult> {
   let result;
 
   switch (command) {
-    case "new":
+    case 'new':
       result = await handleSessionNew();
       break;
-    case "switch":
+    case 'switch':
       result = await handleSessionSwitch(args);
       break;
-    case "list":
+    case 'list':
       result = await handleSessionList();
       break;
-    case "current":
+    case 'current':
       result = await handleSessionCurrent();
       break;
     default:
       result = {
-        text: "未知的 session 命令",
+        text: '未知的 session 命令',
         success: false,
       };
   }
@@ -61,14 +58,14 @@ async function handleSessionCommand(
 
 async function handleAIMessage(
   content: string,
-  parsedMessage: ParsedMessage,
+  parsedMessage: ParsedMessage
 ): Promise<MessageHandlerResult> {
   try {
     const result = await sendPrompt(content, parsedMessage.imageUrls);
 
-    if (!result.text || result.text.trim() === "") {
+    if (!result.text || result.text.trim() === '') {
       return {
-        text: "AI 返回了空响应",
+        text: 'AI 返回了空响应',
         success: true,
       };
     }

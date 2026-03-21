@@ -1,4 +1,4 @@
-import type { QQMessageEvent, ParsedMessage } from "../types.js";
+import type { QQMessageEvent, ParsedMessage } from '../types.js';
 
 const FACE_TAG_REGEX = /<face name="([^"]+)"[^/]*\/>/gi;
 
@@ -38,8 +38,7 @@ function extractImageUrls(content: string): string[] {
   const urls: string[] = [];
   let match;
 
-  const regex =
-    /https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|webp)(?:\?[^\s"'<>]*)?/gi;
+  const regex = /https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|webp)(?:\?[^\s"'<>]*)?/gi;
   while ((match = regex.exec(content)) !== null) {
     urls.push(match[0]);
   }
@@ -49,10 +48,7 @@ function extractImageUrls(content: string): string[] {
 
 function removeImageUrls(content: string): string {
   return content
-    .replace(
-      /https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|webp)(?:\?[^\s"'<>]*)?/gi,
-      "",
-    )
+    .replace(/https?:\/\/[^\s"'<>]+\.(?:png|jpg|jpeg|gif|webp)(?:\?[^\s"'<>]*)?/gi, '')
     .trim();
 }
 
@@ -90,12 +86,12 @@ export function chunkText(text: string, limit: number): string[] {
   }
 
   const chunks: string[] = [];
-  const lines = text.split("\n");
-  let currentChunk = "";
+  const lines = text.split('\n');
+  let currentChunk = '';
 
   for (const line of lines) {
     if (currentChunk.length + line.length + 1 <= limit) {
-      currentChunk += (currentChunk ? "\n" : "") + line;
+      currentChunk += (currentChunk ? '\n' : '') + line;
     } else {
       if (currentChunk) {
         chunks.push(currentChunk);
@@ -105,7 +101,7 @@ export function chunkText(text: string, limit: number): string[] {
       } else {
         const subChunks = splitLongLine(line, limit);
         chunks.push(...subChunks.slice(0, -1));
-        currentChunk = subChunks[subChunks.length - 1] || "";
+        currentChunk = subChunks[subChunks.length - 1] || '';
       }
     }
   }
