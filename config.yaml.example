@@ -1,0 +1,23 @@
+# QQ Bot 配置
+qq:
+  appId: "1234567890"
+  clientSecret: "your-client-secret-here"
+  markdownSupport: true  # 启用 Markdown 渲染
+
+# opencode 服务器配置
+opencode:
+  port: 4097
+  hostname: "127.0.0.1"
+  # opencode 运行时配置（会传递给 opencode 服务器）
+  # 具体配置请参考 opencode 官方文档
+  config:
+    model: "minimax/MiniMax-M2.7"
+    provider:
+      minimax:
+        options:
+          baseURL: "https://api.minimaxi.com/anthropic/v1"
+          apiKey: "${MINIMAX_API_KEY}"
+
+# 应用配置
+app:
+  workingDir: "./"
