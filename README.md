@@ -18,6 +18,7 @@ QQ Bot powered by OpenCode AI - 一个基于 OpenCode AI 的 QQ 机器人。
 
 - Node.js >= 18.0.0
 - npm 或 yarn
+- opencode（请参考 [OpenCode AI](https://opencode.ai) 进行安装）
 - QQ 机器人账号（需要在 [QQ 开放平台](https://q.qq.com) 创建应用）
 - OpenCode AI API Key
 
@@ -43,6 +44,7 @@ qqbot init
 ```
 
 按提示填写：
+
 - QQ Bot AppID 和 ClientSecret
 - 是否启用 Markdown
 - opencode 服务端口
@@ -57,13 +59,13 @@ qqbot
 
 ## 使用命令
 
-| 命令 | 说明 |
-|------|------|
-| `/session-new` | 创建新会话 |
+| 命令                   | 说明           |
+| ---------------------- | -------------- |
+| `/session-new`         | 创建新会话     |
 | `/session-switch <id>` | 切换到指定会话 |
-| `/session-list` | 列出所有会话 |
-| `/session-current` | 显示当前会话 |
-| `任意文字消息` | 发送给 AI 处理 |
+| `/session-list`        | 列出所有会话   |
+| `/session-current`     | 显示当前会话   |
+| `任意文字消息`         | 发送给 AI 处理 |
 
 ## 配置说明
 
@@ -71,26 +73,26 @@ qqbot
 
 ```yaml
 qq:
-  appId: "your-app-id"
-  clientSecret: "your-client-secret"
+  appId: 'your-app-id'
+  clientSecret: 'your-client-secret'
   markdownSupport: true
 
 opencode:
   port: 4097
-  hostname: "127.0.0.1"
+  hostname: '127.0.0.1'
   config:
-    model: "provider/model-name"
+    model: 'provider/model-name'
     provider:
       your-provider:
         options:
-          baseURL: "https://api.example.com/v1"
-          apiKey: "your-api-key"
+          baseURL: 'https://api.example.com/v1'
+          apiKey: 'your-api-key'
         models:
           model-name:
-            name: "provider/model-name"
+            name: 'provider/model-name'
 
 app:
-  workingDir: "./"
+  workingDir: './'
 ```
 
 ### AI Provider 配置
@@ -100,15 +102,15 @@ app:
 ```yaml
 opencode:
   config:
-    model: "minimax/MiniMax-M2.7"
+    model: 'minimax/MiniMax-M2.7'
     provider:
       minimax:
         options:
-          baseURL: "https://api.minimaxi.com/anthropic/v1"
-          apiKey: "your-api-key"
+          baseURL: 'https://api.minimaxi.com/anthropic/v1'
+          apiKey: 'your-api-key'
         models:
           MiniMax-M2.7:
-            name: "minimax/MiniMax-M2.7"
+            name: 'minimax/MiniMax-M2.7'
 ```
 
 #### OpenAI API 兼容
@@ -116,15 +118,15 @@ opencode:
 ```yaml
 opencode:
   config:
-    model: "openai/gpt-4o"
+    model: 'openai/gpt-4o'
     provider:
       openai:
         options:
-          baseURL: "https://api.openai.com/v1"
-          apiKey: "your-api-key"
+          baseURL: 'https://api.openai.com/v1'
+          apiKey: 'your-api-key'
         models:
           gpt-4o:
-            name: "openai/gpt-4o"
+            name: 'openai/gpt-4o'
 ```
 
 ## CLI 选项
